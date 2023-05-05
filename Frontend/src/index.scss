@@ -1,0 +1,42 @@
+/* SCSS VARIABLES */
+
+$font1: 'Playfair Display', serif;
+$font2: 'Inter', sans-serif;
+$blue: #1540A7;
+$blue2: #3A5DC1;
+$pink: #FDC6CC;
+$grey: #f3f3f3;
+$red: red;
+$green: #40a715;
+
+/* SCSS MIXINS */
+
+@mixin theme($theme: centreAbs) {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.hidden {
+    visibility: hidden;
+    display: none;
+}
+
+.visible {
+    visibility: visible;
+  }
+
+body {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: $blue;
+}
+
+/* Global classes */
+
+.screen {
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+}
