@@ -13,6 +13,7 @@ const recurringGoalsDB = new nedb({filename:'recurringGoals.db', autoload:true})
 
 app.use(cors()); 
 app.use(express.json());
+app.use(express.static('public'));
 
 //Handle register request
 
@@ -274,7 +275,7 @@ app.post("/completeRecurringGoal/:goalID", (req, res) => {
 });
 
 app.get('/', (req, res) => {
-    res.send('Welcome to the backend of achiefivy :)');
+  res.sendFile('index.html', { root: '../Frontend/public/' });
   });
 
 app.use(function(req, res) {
@@ -284,4 +285,5 @@ app.use(function(req, res) {
 app.listen(3001, function() {
   console.log('Server started on port 3000. Ctrl^c to quit.'); 
 });
+
 
