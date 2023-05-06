@@ -32,7 +32,7 @@ class Goals extends React.Component {
         const userID = localStorage.getItem("userID");
      
         axios
-          .get(`/getOneOffGoals/${userID}`)
+          .get(`https://achievifybackend.onrender.com/getOneOffGoals/${userID}`)
           .then((response) => {
 
             const goals = response.data;
@@ -94,7 +94,7 @@ class Goals extends React.Component {
           });
 
           axios
-          .get(`/getRecurringGoals/${userID}`)
+          .get(`https://achievifybackend.onrender.com/getRecurringGoals/${userID}`)
           .then((response) => {
 
             const weekDays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
@@ -264,7 +264,7 @@ class Goals extends React.Component {
         switch(goalType) {
             case 'oneOff':
                 axios
-                .post(`/completeOneOffGoal/${goalID}`)
+                .post(`https://achievifybackend.onrender.com/completeOneOffGoal/${goalID}`)
                 .then((response) => {
                 console.log('worked');
                 })
@@ -274,7 +274,7 @@ class Goals extends React.Component {
                 break;
             case 'recurring':
                 axios
-                .post(`/completeRecurringGoal/${goalID}`)
+                .post(`https://achievifybackend.onrender.com/completeRecurringGoal/${goalID}`)
                 .then((response) => {
                 console.log('worked');
                 })
@@ -297,7 +297,7 @@ class Goals extends React.Component {
         switch(goalType) {
             case 'oneOff':
                 axios
-                .post(`/deleteOneOffGoal/${goalID}`)
+                .post(`https://achievifybackend.onrender.com/deleteOneOffGoal/${goalID}`)
                 .then((response) => {
                 console.log('worked');
                 })
@@ -307,7 +307,7 @@ class Goals extends React.Component {
                 break;
             case 'recurring':
                 axios
-                .post(`/deleteRecurringGoal/${goalID}`)
+                .post(`https://achievifybackend.onrender.com/deleteRecurringGoal/${goalID}`)
                 .then((response) => {
                 console.log('worked');
                 })
@@ -377,7 +377,7 @@ class Goals extends React.Component {
         switch(type){
             case 'oneOff':
                 axios
-                .post("/addNewOneOffGoal", {
+                .post("https://achievifybackend.onrender.com/addNewOneOffGoal", {
                     user_id: userID,
                     name: goalName,
                     category: goalCatergory,
@@ -394,7 +394,7 @@ class Goals extends React.Component {
                 break;
             case 'recurring':
                 axios
-                .post("/addRecurringGoal", {
+                .post("https://achievifybackend.onrender.com/addRecurringGoal", {
                     user_id: userID,
                     name: goalName,
                     category: goalCatergory,

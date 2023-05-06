@@ -55,7 +55,7 @@ class Landing extends React.Component {
         var password = document.getElementById("createPwd").value;
           
         axios
-        .post("/register", { name, email, password })
+        .post("https://achievifybackend.onrender.com/register", { name, email, password })
         .then((response) => {
             document.getElementById("registerSuccess").textContent = 'Account created...';
             setTimeout(() => {this.toLogin()}, 1000);
@@ -82,7 +82,7 @@ class Landing extends React.Component {
         var userPassword = document.getElementById("loginPwd").value;
 
         axios
-        .post("/login", { email: userEmail, password: userPassword })
+        .post("https://achievifybackend.onrender.com/login", { email: userEmail, password: userPassword })
         .then((response) => {
 
             document.getElementById('loadingIcon').classList.remove('hidden');
