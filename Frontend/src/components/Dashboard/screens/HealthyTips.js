@@ -300,9 +300,9 @@ class HealthyTips extends React.Component {
 
             <nav className="healthyTipsNav">
                 <ul>
-                    <li id="healthyTipsNavFitness" onClick={() => this.changeTips("fitness")} className="healthyTipsNavActive"><i className="fa-solid fa-dumbbell"></i>Fitness</li>
-                    <li id="healthyTipsNavNutrition" onClick={() => this.changeTips("nutrition")}><i className="fa-solid fa-utensils"></i>Nutrition</li>
-                    <li id="healthyTipsNavHealth" onClick={() => this.changeTips("health")}><i className="fa-solid fa-heart"></i>Health</li>
+                    <li id="healthyTipsNavFitness" onClick={() => this.changeTips("fitness")} className="healthyTipsNavActive"><i className="fa-solid fa-dumbbell"></i>Fitness Tips</li>
+                    <li id="healthyTipsNavNutrition" onClick={() => this.changeTips("nutrition")}><i className="fa-solid fa-utensils"></i>Nutrition Tips</li>
+                    <li id="healthyTipsNavHealth" onClick={() => this.changeTips("health")}><i className="fa-solid fa-heart"></i>Lifestyle Tips</li>
                 </ul>
             </nav>
 

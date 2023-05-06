@@ -298,8 +298,10 @@
     height: 60%;
 
     .goalsNav {
+        background-color: $pink;
         height: 20%;
         padding-left: 0;
+        border-radius: 0;
 
         ul {
             padding-left: 0;
@@ -345,7 +347,7 @@
     }
 }
 
-#goalsList {
+#goalsList, #completedGoalsList {
     position: absolute;
     width: 100%;
     top: 20%;
@@ -358,6 +360,12 @@
 
         p {
             font-family: $font2;
+        }
+
+        i {
+            display: inline;
+            font-size: 5vh;
+            color: $green;
         }
     }
 

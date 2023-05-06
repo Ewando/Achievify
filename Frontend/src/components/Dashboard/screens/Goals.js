@@ -10,6 +10,8 @@ class Goals extends React.Component {
         this.handleDayClick = this.handleDayClick.bind(this);
         this.getGoals = this.getGoals.bind(this)
         this.addNewGoal = this.addNewGoal.bind(this);
+        this.completeGoal = this.completeGoal.bind(this);
+        this.deleteGoal = this.deleteGoal.bind(this);
     }
 
     //ON PAGE LOAD, LOAD GOALS FROM DB
@@ -23,7 +25,9 @@ class Goals extends React.Component {
     getGoals() {
 
         let goalList = document.getElementById('goalsList');
+        let completedGoalsList = document.getElementById('completedGoalsList');
         goalList.innerHTML = '';
+        completedGoalsList.innerHTML = '';
 
         const userID = localStorage.getItem("userID");
      
@@ -39,25 +43,51 @@ class Goals extends React.Component {
 
                 let goalCard = document.createElement('div');
                 goalCard.className = 'oneOff';
-
-                let goalsCardType = document.createElement('p');
-                goalsCardType.innerHTML = "One-off Goal";
+                goalCard.id = goal._id;
 
                 let goalsCardName = document.createElement('h2');
-                goalsCardName.innerHTML = goal.category + ' | ' + goal.name;
+                goalsCardName.innerHTML = goal.category + ' goal : ' + goal.name;
 
                 let goalsCardDue = document.createElement('p');
-                goalsCardDue.innerHTML = "Due: " + goal.date;
+                goalsCardDue.innerHTML = "One-off goal due: " + goal.date;
 
                 goalCard.appendChild(goalsCardName);
-                goalCard.appendChild(goalsCardType);
                 goalCard.appendChild(goalsCardDue);
+
+                if(goal.isComplete) {
+
+                    completedGoalsList.appendChild(goalCard);
+
+                } else {
+
+                let goalCardComplete = document.createElement('button');
+                goalCardComplete.innerHTML = 'Complete';
+                goalCardComplete.addEventListener('click', () => {
+                    this.completeGoal(goal._id, goalCard.className);
+                });
+
+                let goalCardModify = document.createElement('button');
+                goalCardModify.innerHTML = 'Edit';
+                goalCardModify.addEventListener('click', () => {
+                    this.editGoal(goal._id, goalCard.className, goal.name, goal.category, goal.date);
+                });
+
+                let goalCardDelete = document.createElement('button');
+                goalCardDelete.innerHTML = 'Remove';
+                goalCardDelete.addEventListener('click', () => {
+                    this.deleteGoal(goal._id, goalCard.className);
+                });
+
+                goalCard.appendChild(goalCardDelete);
+                goalCard.appendChild(goalCardModify);
+                goalCard.appendChild(goalCardComplete);
 
                 goalList.appendChild(goalCard);
 
+                }
+
             }
 
-            console.log(goals);
           })
           .catch((error) => {
             console.log(error);
@@ -78,24 +108,41 @@ class Goals extends React.Component {
                 let goalCard = document.createElement('div');
                 goalCard.className = 'recurring';
 
-                let goalsCardType = document.createElement('p');
-                goalsCardType.innerHTML = "Recurring Goal";
-
                 let goalsCardName = document.createElement('h2');
-                goalsCardName.innerHTML = goal.category + ' | ' + goal.name;
+                goalsCardName.innerHTML = goal.category + ' goal : ' + goal.name;
 
                 let goalsCardDue = document.createElement('p');
-                goalsCardDue.innerHTML = "Every " + weekDays[goal.day];
+                goalsCardDue.innerHTML = "Recurring goal for every " + weekDays[goal.day];
+
+                let goalCardComplete = document.createElement('button');
+                goalCardComplete.innerHTML = 'Complete';
+                goalCardComplete.addEventListener('click', () => {
+                    this.completeGoal(goal._id, goalCard.className);
+                });
+                
+
+                let goalCardModify = document.createElement('button');
+                goalCardModify.innerHTML = 'Edit';
+                goalCardModify.addEventListener('click', () => {
+                    this.editGoal(goal._id, goalCard.className, goal.name, goal.category, goal.day);
+                });
+
+                let goalCardDelete = document.createElement('button');
+                goalCardDelete.innerHTML = 'Remove';
+                goalCardDelete.addEventListener('click', () => {
+                    this.deleteGoal(goal._id, goalCard.className);
+                });
 
                 goalCard.appendChild(goalsCardName);
-                goalCard.appendChild(goalsCardType);
                 goalCard.appendChild(goalsCardDue);
+                goalCard.appendChild(goalCardDelete);
+                goalCard.appendChild(goalCardModify);
+                goalCard.appendChild(goalCardComplete);
 
                 goalList.appendChild(goalCard);
 
             }
 
-            console.log(goals);
           })
           .catch((error) => {
             console.log(error);
@@ -110,7 +157,14 @@ class Goals extends React.Component {
 
     //SHOW THE GOAL FORM
 
-    showGoalForm(){
+    showGoalForm(isEdit){
+
+        if(isEdit){
+            document.getElementById('addNewGoal').classList.add('edit');
+        } else {
+            document.getElementById('addNewGoal').classList.remove('edit');
+        }
+
         document.getElementById('addNewGoal').classList.remove('hidden');
         document.getElementById('calendar-wrapper').classList.add('hidden');
         document.getElementById('myGoalsContainer').classList.add('hidden');
@@ -121,6 +175,7 @@ class Goals extends React.Component {
     cancelGoal(event){
 
         event.preventDefault();
+        document.getElementById('addGoalHeader').innerText = 'Add goal';
         document.getElementById('addNewGoal').classList.add('hidden');
         document.getElementById('calendar-wrapper').classList.remove('hidden');
         document.getElementById('myGoalsContainer').classList.remove('hidden');
@@ -132,8 +187,9 @@ class Goals extends React.Component {
     changeFormType(){
 
         let type = document.getElementById('goalType').value;
-
+      
         switch(type) {
+
             case 'oneOff':
                 document.getElementById('goalDateLabel').classList.remove('hidden');
                 document.getElementById('goalDate').classList.remove('hidden');
@@ -156,6 +212,25 @@ class Goals extends React.Component {
 
         }
     }
+
+    //TOGGLE ACHIEVEMENTS TAB
+
+    viewAchievements() {
+        document.getElementById('goalsList').classList.toggle('hidden');
+        document.getElementById('completedGoalsList').classList.toggle('hidden');
+        document.getElementById('calendar-wrapper').classList.toggle('hidden');
+        document.getElementById('addNewGoalBtn').classList.toggle('hidden');
+
+        var x = document.getElementById("viewAchievementTxt");
+        if (x.innerHTML === "View Achievements") {
+            x.innerHTML = "View Current Goals";
+        } else {
+            x.innerHTML = "View Achievements";
+        }
+
+    }
+
+    //FILTER GOALS BY TYPE OF GOAL
 
     filterGoals(){
 
@@ -181,6 +256,109 @@ class Goals extends React.Component {
 
     }
 
+    //COMPLETE A GOAL
+
+    completeGoal(goalID, goalType){
+
+        switch(goalType) {
+            case 'oneOff':
+                axios
+                .post(`/completeOneOffGoal/${goalID}`)
+                .then((response) => {
+                console.log('worked');
+                })
+                .catch((error) => {
+                console.log(error);
+                });
+                break;
+            case 'recurring':
+                axios
+                .post(`/completeRecurringGoal/${goalID}`)
+                .then((response) => {
+                console.log('worked');
+                })
+                .catch((error) => {
+                console.log(error);
+                });
+                break;
+            default:
+                console.log("error completing goal"); 
+        }
+
+        this.getGoals();
+
+    }
+
+    //DELETE A GOAL
+
+    deleteGoal(goalID, goalType){
+
+        switch(goalType) {
+            case 'oneOff':
+                axios
+                .post(`/deleteOneOffGoal/${goalID}`)
+                .then((response) => {
+                console.log('worked');
+                })
+                .catch((error) => {
+                console.log(error);
+                });
+                break;
+            case 'recurring':
+                axios
+                .post(`/deleteRecurringGoal/${goalID}`)
+                .then((response) => {
+                console.log('worked');
+                })
+                .catch((error) => {
+                console.log(error);
+                });
+                break;
+            default:
+                console.log("error completing goal"); 
+        }
+
+        this.getGoals();
+
+    }
+
+    //EDIT A GOAL
+
+    editGoal(goalID, goalType, goalName, goalCategory, goalDate){
+
+        switch(goalType){
+            case 'oneOff':
+                document.getElementById('goalType').value = 'oneOff';
+                document.getElementById('goalDate').value = goalDate;
+                break;
+            case 'recurring':
+                document.getElementById('goalType').value = 'recurring';
+                document.getElementById('goalDay').value = goalDate;
+                break;
+            default:
+                console.log("error editting goal");
+
+        }
+
+       
+        document.getElementById('goalName').value = goalName;
+        document.getElementById('goalCatergory').value = goalCategory;
+
+        this.showGoalForm(true);
+        this.changeFormType();
+        document.getElementById('addGoalHeader').innerText = 'Edit existing goal';
+
+        var goalForm = document.getElementById('addGoalForm');
+
+        goalForm.addEventListener("submit", (ev) => {
+            ev.preventDefault();
+            this.deleteGoal(goalID, goalType);
+        });
+
+        this.getGoals();
+
+    }
+    
     //GATHER GOAL INPUTS AND SEND TO DB
 
     addNewGoal(event){
@@ -249,7 +427,7 @@ class Goals extends React.Component {
 
                     <nav className="goalsNav">
                         <ul>
-                            <li><i className="fa-solid fa-clock-rotate-left"></i>View Achievements</li>
+                            <li id="viewAchievements" onClick={this.viewAchievements}><i className="fa-solid fa-clock-rotate-left"></i><span id="viewAchievementTxt">View Achievements</span></li>
                             <li>
                                 View
                                 <select onChange={this.filterGoals} name="goalsNavSelect" id="goalsNavSelect">
@@ -258,7 +436,7 @@ class Goals extends React.Component {
                                 <option value="recurring">Recurring Goals</option>
                                 </select>
                             </li>
-                            <li><i onClick={this.showGoalForm} className="fa-solid fa-circle-plus"></i>Add Goal</li>
+                            <li id='addNewGoalBtn' onClick={() => this.showGoalForm(false)}><i className="fa-solid fa-circle-plus"></i>Add Goal</li>
                         </ul>
                     </nav>
 
@@ -266,15 +444,17 @@ class Goals extends React.Component {
                     
                     </div>
 
-                   
+                    <div id="completedGoalsList" className="hidden">
+
+                    </div>   
 
                 </section>
 
                 <section id="addNewGoal" className="hidden">
 
-                    <h3><i className="fa-solid fa-bullseye"></i> Add new goal</h3>
+                    <h3><i className="fa-solid fa-bullseye"></i> <span id="addGoalHeader">Add new goal</span></h3>
 
-                    <form onSubmit={this.addNewGoal}>
+                    <form id="addGoalForm" onSubmit={this.addNewGoal}>
 
                     <label htmlFor="goalType">Type</label>
                     <select onChange={this.changeFormType} name="goalType" id="goalType">
@@ -293,7 +473,7 @@ class Goals extends React.Component {
                         <input type="text" id="goalName" name="goalName" required></input>
 
                         <label id='goalDateLabel' htmlFor="goalDate">Date to complete</label>
-                        <input type="date" id="goalDate" name="goalDate" required></input>
+                        <input type="date" id="goalDate" name="goalDate" min={new Date().toISOString().split('T')[0]} required></input>
 
                         <label id='goalDayLabel' htmlFor="goalDay" className="hidden">Day</label>
                         <select name="goalDay" id="goalDay" className="hidden">
