@@ -192,7 +192,7 @@ class Landing extends React.Component {
                 <img alt="hospital workers" src={require('../../resources/login.png')}/>
 
                 <p>
-                An app for tracking health and wellness goals. It offers personalized nutrition and exercise recommendations, allows for easy goal-setting and progress tracking, and provides resources on fitness, nutrition, and well-being.
+                Achievify is a free to use application which promotes healthy well being and happiness for everyone. Through our suggested reccomendations on fitness, nutrition, and lifestyle - you can set, track, and achieve your personal goals. Sign up today!
                 </p>
                 
                 </aside>

@@ -31,7 +31,6 @@ class HealthyTips extends React.Component {
                 'X-Api-Key': apiKey
             }
         }).then(response => {
-            console.log(response.data);
             this.createFitnessCards(response.data);
         }).catch(error => {
             console.log(error);

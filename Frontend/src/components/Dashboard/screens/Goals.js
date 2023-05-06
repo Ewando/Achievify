@@ -61,19 +61,19 @@ class Goals extends React.Component {
                 } else {
 
                 let goalCardComplete = document.createElement('button');
-                goalCardComplete.innerHTML = 'Complete';
+                goalCardComplete.innerHTML = '<i class="fa-solid fa-check"></i> Complete';
                 goalCardComplete.addEventListener('click', () => {
                     this.completeGoal(goal._id, goalCard.className);
                 });
 
                 let goalCardModify = document.createElement('button');
-                goalCardModify.innerHTML = 'Edit';
+                goalCardModify.innerHTML = '<i class="fa-solid fa-pen-to-square"></i> Edit';
                 goalCardModify.addEventListener('click', () => {
                     this.editGoal(goal._id, goalCard.className, goal.name, goal.category, goal.date);
                 });
 
                 let goalCardDelete = document.createElement('button');
-                goalCardDelete.innerHTML = 'Remove';
+                goalCardDelete.innerHTML = '<i class="fa-solid fa-trash"></i> Remove';
                 goalCardDelete.addEventListener('click', () => {
                     this.deleteGoal(goal._id, goalCard.className);
                 });
@@ -115,20 +115,20 @@ class Goals extends React.Component {
                 goalsCardDue.innerHTML = "Recurring goal for every " + weekDays[goal.day];
 
                 let goalCardComplete = document.createElement('button');
-                goalCardComplete.innerHTML = 'Complete';
+                goalCardComplete.innerHTML = '<i class="fa-solid fa-check"></i> Complete';
                 goalCardComplete.addEventListener('click', () => {
                     this.completeGoal(goal._id, goalCard.className);
                 });
                 
 
                 let goalCardModify = document.createElement('button');
-                goalCardModify.innerHTML = 'Edit';
+                goalCardModify.innerHTML = '<i class="fa-solid fa-pen-to-square"></i> Edit';
                 goalCardModify.addEventListener('click', () => {
                     this.editGoal(goal._id, goalCard.className, goal.name, goal.category, goal.day);
                 });
 
                 let goalCardDelete = document.createElement('button');
-                goalCardDelete.innerHTML = 'Remove';
+                goalCardDelete.innerHTML = '<i class="fa-solid fa-trash"></i> Remove';
                 goalCardDelete.addEventListener('click', () => {
                     this.deleteGoal(goal._id, goalCard.className);
                 });
@@ -162,6 +162,7 @@ class Goals extends React.Component {
         if(isEdit){
             document.getElementById('addNewGoal').classList.add('edit');
         } else {
+            document.getElementById("addGoalForm").reset();
             document.getElementById('addNewGoal').classList.remove('edit');
         }
 
@@ -175,7 +176,7 @@ class Goals extends React.Component {
     cancelGoal(event){
 
         event.preventDefault();
-        document.getElementById('addGoalHeader').innerText = 'Add goal';
+        document.getElementById('addGoalHeader').innerText = 'Add a new goal';
         document.getElementById('addNewGoal').classList.add('hidden');
         document.getElementById('calendar-wrapper').classList.remove('hidden');
         document.getElementById('myGoalsContainer').classList.remove('hidden');
@@ -386,7 +387,6 @@ class Goals extends React.Component {
                 .then((response) => {
                     this.getGoals();
                     this.cancelGoal(event);
-                    console.log(response);
                 })
                 .catch((error) => {
                     console.log(error);
@@ -452,7 +452,7 @@ class Goals extends React.Component {
 
                 <section id="addNewGoal" className="hidden">
 
-                    <h3><i className="fa-solid fa-bullseye"></i> <span id="addGoalHeader">Add new goal</span></h3>
+                    <h3><i className="fa-solid fa-bullseye"></i> <span id="addGoalHeader">Add a new goal</span></h3>
 
                     <form id="addGoalForm" onSubmit={this.addNewGoal}>
 
