@@ -49,7 +49,7 @@ class Goals extends React.Component {
                 goalsCardName.innerHTML = goal.category + ' goal : ' + goal.name;
 
                 let goalsCardDue = document.createElement('p');
-                goalsCardDue.innerHTML = "One-off goal due: " + goal.date;
+                goalsCardDue.innerHTML = "Goal due: " + new Date(goal.date).toLocaleDateString('en-GB');
 
                 goalCard.appendChild(goalsCardName);
                 goalCard.appendChild(goalsCardDue);
@@ -112,7 +112,7 @@ class Goals extends React.Component {
                 goalsCardName.innerHTML = goal.category + ' goal : ' + goal.name;
 
                 let goalsCardDue = document.createElement('p');
-                goalsCardDue.innerHTML = "Recurring goal for every " + weekDays[goal.day];
+                goalsCardDue.innerHTML = "Goal for every " + weekDays[goal.day] + ", Completed: " + goal.numOfCompletes + " times";
 
                 let goalCardComplete = document.createElement('button');
                 goalCardComplete.innerHTML = '<i class="fa-solid fa-check"></i> Complete';
@@ -399,7 +399,7 @@ class Goals extends React.Component {
                     name: goalName,
                     category: goalCatergory,
                     day: goalDay,
-                    isComplete: false
+                    numOfCompletes: 0
                   })
                 .then((response) => {
                     this.getGoals();
@@ -419,6 +419,9 @@ class Goals extends React.Component {
         return (
             <>
                 <section id="calendar-wrapper" >
+
+                    {/* Click on date to see goal for that day (unfinished) */}
+
                     <Calendar className="my-calendar" onClickDay={this.handleDayClick} />
                 </section>
 
@@ -436,7 +439,7 @@ class Goals extends React.Component {
                                 <option value="recurring">Recurring Goals</option>
                                 </select>
                             </li>
-                            <li id='addNewGoalBtn' onClick={() => this.showGoalForm(false)}><i className="fa-solid fa-circle-plus"></i>Add Goal</li>
+                            <li id='addNewGoalBtn' onClick={() => this.showGoalForm(false)}><i className="fa-solid fa-circle-plus"></i><span id="addGoalTxt">Add Goal</span></li>
                         </ul>
                     </nav>
 

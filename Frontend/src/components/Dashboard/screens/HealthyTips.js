@@ -112,7 +112,6 @@ class HealthyTips extends React.Component {
                 'X-Api-Key': apiKey
             }
         }).then(response => {
-            //console.log(response.data);
             this.createNutritionCards(response.data);
         }).catch(error => {
             console.log(error);
@@ -271,6 +270,12 @@ class HealthyTips extends React.Component {
 
     }
 
+    //Use the suggested tip to create a goal (unfinished)
+
+    setHealthyGoal(goal){
+        console.log(goal);
+    }
+
     render(){
         return(
             <>
@@ -308,7 +313,7 @@ class HealthyTips extends React.Component {
             <div className="tipsContainer">
 
                 <section id="fitnessTips">
-
+                    <h3>Search for specific exercises</h3>
                     <form onSubmit={this.searchFitnessAPI}>
                         <label htmlFor="fitnessType">Type:</label>
                         <select name="fitnessType" id="fitnessType">
@@ -368,6 +373,7 @@ class HealthyTips extends React.Component {
                 </section>
 
                 <section id="nutritionTips" className="hidden">
+                    <h3>Search for nutritional values of specifc foods</h3>
                     <form onSubmit={this.searchNutritionAPI}>
                         <label htmlFor="nutritionKeywords">Keywords</label>
                         <input name="nutritionKeywords" id="nutritionKeywords" type="text"></input>
@@ -386,8 +392,8 @@ class HealthyTips extends React.Component {
                 <section id="healthTips" className="hidden">
                     
                 {lifestyleTips.map((item, index) => (
-                <div className="responseCard" key={index}>
-                 <h3>{item[0]}</h3>
+                <div onClick={() => this.setHealthyGoal(item[0])}className="responseCard healthyTipCard" key={index}>
+                 <h4>{item[0]}</h4>
                 </div>
                 ))}
 

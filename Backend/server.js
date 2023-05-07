@@ -209,14 +209,14 @@ app.get("/getRecurringGoals/:userID", (req, res) => {
 
 app.post("/addRecurringGoal", (req, res) => {
 
-  const { user_id, name, category, day, isComplete } = req.body;
+  const { user_id, name, category, day, numOfCompletes } = req.body;
 
   const goal = {
     user_id,
     name,
     category,
     day,
-    isComplete
+    numOfCompletes
   };
 
   recurringGoalsDB.insert(goal, (err, newGoal) => {
@@ -248,31 +248,31 @@ app.post("/deleteRecurringGoal/:goalID", (req, res) => {
 });
 
 // COMPLETE RECURRING GOAL
+// BUG HAPPENS WHEN COMPLETING TOO MANY TIMES, NEED TO REFRESH APP
 
 app.post("/completeRecurringGoal/:goalID", (req, res) => {
-
   const id = req.params.goalID;
 
-  recurringGoalsDB.update({ _id: id }, { $set: { isComplete: true } }, {}, (err) => {
+  recurringGoalsDB.findOne({ _id: id }, function (err, doc) {
     if (err) {
       console.log(err);
     } else {
-      console.log(`Completed goal successfully.`);
 
-      // Chain the remove operation after the update is successful.
-      recurringGoalsDB.remove({ _id: id, isComplete: false }, {}, (err, numRemoved) => {
+      const numOfCompletes = doc.numOfCompletes || 0;
+
+      recurringGoalsDB.update({ _id: id }, { $set: { numOfCompletes: numOfCompletes + 1 } }, {}, (err) => {
         if (err) {
           console.log(err);
         } else {
-          console.log(`Removed old goal`);
+          console.log(`Completed goal successfully.`);
         }
       });
     }
   });
 
   recurringGoalsDB.loadDatabase();
-
 });
+
 
 app.get('/', (req, res) => {
   res.sendFile('index.html', { root: '../Frontend/public/' });
